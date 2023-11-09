@@ -17,5 +17,13 @@ jobs:
       run: |
         dotnet tool install --global AzureSignTool
         dotnet tool restore
-        echo "::add-path::$(dotnet tool run azuresigntool --tool-path)"
+      shell: pwsh
+
+    - name: Sign files
+      run: |
+        $fileFolder = "$env:GITHUB_WORKSPACE\psfiles"
+        $files = Get-ChildItem -Path $fileFolder
+        foreach ($file in $files) {
+            Write-Host $file.FullName
+        }
       shell: pwsh
