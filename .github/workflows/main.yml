@@ -25,7 +25,7 @@ jobs:
         $files = Get-ChildItem -Path $fileFolder
         try {
           foreach ($file in $files) {
-            azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v $file.fullName
+            azuresigntool sign -kvu "https://gc-kv-prod.vault.azure.net/" -kvi "b00bd988-1c57-43b7-b8f5-9eeda46eebda" -kvt "815bbad6-b446-4ee6-a6cc-0d5880afd740" -kvs "AoB8Q~IcsHHaqXUQTqHQ~CaPxGpn~kqaZKR2rc6T" -kvc "CodeSigningCert" -v $file.fullName
           }
         }
         catch
