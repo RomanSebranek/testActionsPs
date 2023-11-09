@@ -21,11 +21,9 @@ jobs:
         
         try {
             foreach ($file in $files) {
-                azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v "$($file.FullName)"
-        
-                # write file type
-                $signedFileType = (Get-Item -LiteralPath "$($file.FullName)").Extension
-                Write-Host "File $($file.Name) signed. Type: $($signedFileType)"
+                azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v "$($file.FullName)" `
+                | Select-Object Path,Status `
+                | Format-List
             }
         }
         catch {
