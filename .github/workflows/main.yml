@@ -26,7 +26,7 @@ jobs:
         try {
             foreach ($file in $files) {
                 azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v "$($file.FullName)" 
-                $file | Select-Object Path,Status | Format-List
+                Get-AuthenticodeSignature -FilePath $file.FullName
             }
         }
         catch {
