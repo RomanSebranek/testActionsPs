@@ -16,11 +16,6 @@ jobs:
     - name: Install AzureSignTool
       run: |
         dotnet tool install --global AzureSignTool
-        dotnet tool restore
-      shell: pwsh
-
-    - name: Sign files
-      run: |
         $fileFolder = "$env:GITHUB_WORKSPACE\psfiles"
         $files = Get-ChildItem -Path $fileFolder
         try {
@@ -33,6 +28,5 @@ jobs:
           Write-Host "Error: $($_.Exception)"
           throw
         }
-        
       shell: pwsh
 
