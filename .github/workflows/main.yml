@@ -18,15 +18,19 @@ jobs:
         dotnet tool install --global AzureSignTool
         $fileFolder = "$env:GITHUB_WORKSPACE\psfiles"
         $files = Get-ChildItem -Path $fileFolder
+        
         try {
-          foreach ($file in $files) {
-            azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v "$($file.fullName)"
-          }
+            foreach ($file in $files) {
+                azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v "$($file.FullName)"
+        
+                # write file type
+                $signedFileType = (Get-Item -LiteralPath "$($file.FullName)").Extension
+                Write-Host "File $($file.Name) signed. Type: $($signedFileType)"
+            }
         }
-        catch
-        {
-          Write-Host "Error: $($_.Exception)"
-          throw
+        catch {
+            Write-Host "Error: $($_.Exception)"
+            throw
         }
       shell: pwsh
 
