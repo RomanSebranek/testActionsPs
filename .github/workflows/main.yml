@@ -16,14 +16,17 @@ jobs:
     - name: Install AzureSignTool
       run: |
         dotnet tool install --global AzureSignTool
+      shell: pwsh
+
+    - name: Sign Files
+      run: |
         $fileFolder = "$env:GITHUB_WORKSPACE\psfiles"
         $files = Get-ChildItem -Path $fileFolder
         
         try {
             foreach ($file in $files) {
-                azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v "$($file.FullName)" `
-                | Select-Object Path,Status `
-                | Format-List
+                $sign = azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v "$($file.FullName)" 
+                $sign | Select-Object Path,Status | Format-List
             }
         }
         catch {
