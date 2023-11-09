@@ -1,0 +1,21 @@
+name: Code Sign
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sign:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install AzureSignTool
+      run: |
+        dotnet tool install --global AzureSignTool
+        dotnet tool restore
+        echo "::add-path::$(dotnet tool run azuresigntool --tool-path)"
+      shell: pwsh
