@@ -26,12 +26,12 @@ jobs:
         try {
             foreach ($file in $files) {
                 azuresigntool sign -kvu ${{secrets.KEYVAULTURL}} -kvi ${{secrets.CLIENTID}} -kvt ${{secrets.TENANTID}} -kvs ${{secrets.CLIENTSECRET}} -kvc ${{secrets.CERTNAME}} -v "$($file.FullName)" 
-                Get-AuthenticodeSignature -FilePath $file.FullName
             }
         }
         catch {
             Write-Host "Error: $($_.Exception)"
             throw
         }
+        Get-AuthenticodeSignature -FilePath $files
       shell: pwsh
 
