@@ -32,6 +32,7 @@ jobs:
             Write-Host "Error: $($_.Exception)"
             throw
         }
+        Write-Host "Signed files summary:"
         Get-AuthenticodeSignature -FilePath $files
       shell: pwsh
 
